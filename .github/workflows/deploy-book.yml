@@ -34,11 +34,28 @@ jobs:
       - name: Build the book
         run: |
           jupyter-book build textbook
+      
+      - name: Debug build output
+        run: |
+          echo "Repo root:"
+          ls -la
+          echo "Textbook folder:"
+          ls -la textbook || true
+          echo "Build folder:"
+          ls -la textbook/_build || true
+          echo "HTML folder:"
+          ls -la textbook/_build/html || true
+          find textbook -maxdepth 4 -type d -name html -print || true
 
       - name: Prepare Pages artifact
         run: |
           mkdir -p _site
-          cp -r textbook/_build/html/* _site/
+          if [ -d "textbook/_build/html" ]; then
+            cp -r textbook/_build/html/* _site/
+          else
+            echo "ERROR: textbook/_build/html not found. See Debug step output above."
+            exit 1
+          fi
           touch _site/.nojekyll
 
       - name: Upload artifact
