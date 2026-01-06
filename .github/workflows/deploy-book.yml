@@ -50,12 +50,7 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           mkdir -p _site
-          if [ -d "textbook/_build/html" ]; then
-            cp -r textbook/_build/html/* _site/
-          else
-            echo "ERROR: textbook/_build/html not found. See Debug step output above."
-            exit 1
-          fi
+          cp -r _build/html/* _site/
           touch _site/.nojekyll
 
       - name: Upload artifact
