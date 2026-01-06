@@ -38,14 +38,14 @@ jobs:
 
       - name: Build the book
         run: |
-          jupyter-book build textbook
+          jupyter-book build textbook --path-output _build
       
       - name: Debug build output
         run: |
-          echo "Repo root:"
-          ls -la
-          echo "Textbook folder:"
-          ls -la textbook || true
+          echo "Root build folder:"
+          ls -la _build || true
+          echo "Root HTML folder:"
+          ls -la _build/html || true
           echo "Build folder:"
           ls -la textbook/_build || true
           echo "HTML folder:"
@@ -55,6 +55,8 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           mkdir -p _site
+          ls -la _build || true
+          ls -la _build/html || true
           cp -r _build/html/* _site/
           touch _site/.nojekyll
 
