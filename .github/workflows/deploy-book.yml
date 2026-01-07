@@ -40,6 +40,20 @@ jobs:
         run: |
           jupyter-book build textbook
 
+      - name: Show Jupyter Book logs if build fails
+        if: failure()
+        run: |
+          echo "=== _build directory ==="
+          ls -ლა _build || true
+          echo "=== _build/logs directory ==="
+          ls -la _build/logs || true
+          echo "=== Printing logs (if any) ==="
+          for f in _build/logs/*; do
+            echo "----- $f -----"
+            tail -n 200 "$f" || true
+          done
+
+
       - name: Debug build output
         run: |
           echo "Root build folder:"
