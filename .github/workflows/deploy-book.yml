@@ -84,9 +84,17 @@ jobs:
           PY
 
 
+      - name: Diagnose jupyter-book command
+        run: |
+          echo "PATH=$PATH"
+          which jupyter-book || true
+          jupyter-book --version || true
+          python -c "import jupyter_book; print('python jupyter_book version:', jupyter_book.__version__)"
+
       - name: Build the book
         run: |
-          jupyter-book build textbook
+          python -m jupyter_book build --all textbook
+
 
       - name: Show Jupyter Book logs if build fails
         if: failure()
