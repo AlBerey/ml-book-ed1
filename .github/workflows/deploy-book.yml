@@ -93,7 +93,7 @@ jobs:
 
       - name: Build the book
         run: |
-          python -m jupyter_book build --all textbook
+          jupyter-book build --all textbook
 
 
       - name: Show Jupyter Book logs if build fails
