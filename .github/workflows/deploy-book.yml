@@ -36,6 +36,54 @@ jobs:
           rm -rf _build
           rm -rf textbook/_build
 
+      - name: Validate _toc.yml paths
+        run: |
+          python - <<'PY'
+          import yaml, pathlib, sys
+          
+          root = pathlib.Path("textbook")
+          toc = yaml.safe_load((root / "_toc.yml").read_text())
+          
+          bad_dirs = []
+          missing = []
+          
+          def check(stem):
+              # Jupyter Book expects stems (no extension). Resolve to actual file.
+              md = (root / stem).with_suffix(".md")
+              ipynb = (root / stem).with_suffix(".ipynb")
+              p = root / stem
+          
+              if p.exists() and p.is_dir():
+                  bad_dirs.append(stem)
+                  return
+              if not (md.exists() or ipynb.exists()):
+                  # If it's neither a file stem nor an existing dir, it's missing
+                  missing.append(stem)
+          
+          def walk(x):
+              if isinstance(x, dict):
+                  for k,v in x.items():
+                      if k in ("root","file"):
+                          check(v)
+                      walk(v)
+              elif isinstance(x, list):
+                  for i in x: walk(i)
+          
+          walk(toc)
+          
+          print("=== TOC directory entries (INVALID) ===")
+          for b in bad_dirs: print(" -", b)
+          
+          print("\n=== TOC missing page stems (no .md/.ipynb found) ===")
+          for m in missing: print(" -", m)
+          
+          if bad_dirs:
+              print("\nERROR: Some TOC entries are directories. Replace them with real .md/.ipynb files.")
+              sys.exit(2)
+          # Missing entries will also break the build, but directories are your current EISDIR problem.
+          PY
+
+
       - name: Build the book
         run: |
           jupyter-book build textbook
