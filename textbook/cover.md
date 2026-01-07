@@ -15,6 +15,6 @@ If you are using this textbook for teaching, research, or self-learning, we woul
 
 Let this book be your guide as you explore the fascinating world of machine learning, from its foundations to its frontiers.
 
-__Date abd Place:__ _January 2026, Toronto_
+__Date and Place:__ _January 2026, Toronto_
 
 
