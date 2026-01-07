@@ -1,2 +1,2 @@
-jupyter-book>=1.0.0
+jupyter-book==1.0.3
 sphinxcontrib-bibtex>=2.6.0
