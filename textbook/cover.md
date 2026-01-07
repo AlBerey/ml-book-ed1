@@ -2,7 +2,7 @@
 
 Welcome to the __first edition__ of *Learning Machine Learning*!
 
-# Preface
+## Preface
 This book is designed to support learners at all levels—especially those encountering machine learning for the _first time._ It provides a structured and intuitive path through core concepts, mathematical foundations, and modern models, with an emphasis on clarity, code, and critical thinking.
 
 This book has been developed primarily as a learning resource for students at the _University of Toronto_ and is shared onenly for sake of public education. It can be used alongside course instruction or independently for self-study.
