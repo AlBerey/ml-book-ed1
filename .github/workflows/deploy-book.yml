@@ -38,8 +38,8 @@ jobs:
 
       - name: Build the book
         run: |
-          jupyter-book build textbook --path-output _build
-      
+          jupyter-book build textbook
+
       - name: Debug build output
         run: |
           echo "Root build folder:"
@@ -55,15 +55,25 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           mkdir -p _site
-          ls -la _build || true
-          ls -la _build/html || true
-          cp -r _build/html/* _site/
+      
+          if [ -d "textbook/_build/html" ]; then
+            echo "Using textbook/_build/html"
+            cp -r textbook/_build/html/* _site/
+          elif [ -d "_build/html" ]; then
+            echo "Using _build/html"
+            cp -r _build/html/* _site/
+          else
+            echo "ERROR: Could not find built HTML."
+            echo "Listing possible build directories:"
+            ls -la
+            ls -la _build || true
+            ls -la textbook || true
+            find . -maxdepth 4 -type d -name html -print || true
+            exit 1
+          fi
+      
           touch _site/.nojekyll
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
 
   deploy:
     environment:
